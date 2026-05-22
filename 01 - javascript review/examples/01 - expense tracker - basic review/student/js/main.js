@@ -39,9 +39,12 @@ function renderExpenses(expensesData) {
 //4 call the function to render the data on page load
 renderExpenses(expenses);
 
-//5  [skeleton]: form submission
-function submitExpense() {
-    // ...
-}
-
-expenseForm.addEventListener("submit", submitExpense);
+//5  Lets write all our code as inline first , then clean it up later
+expenseForm.addEventListener(
+    "submit", //The name/type of the event (e.g "click", "submit", "change", etc.)
+    function (event) {
+        //The logic/function that should fire (with the event being passed to it by default)
+        event.preventDefault();
+        console.log("Form submitted!");
+    },
+);
