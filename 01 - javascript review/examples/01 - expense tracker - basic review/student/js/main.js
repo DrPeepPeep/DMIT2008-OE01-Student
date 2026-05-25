@@ -11,12 +11,10 @@ const expenseForm = document.getElementById("expense-form-add");
 function renderExpenses(expensesData) {
     //first, clear out existing HTML for the container (because we're about to rerender it)
     expenseContainer.innerHTML = "";
-
     //then, take our array of data and render out a card for each one
-    expensesData.forEach(
-        //for a given expense, add a new card containing that data to the expenseContainer's inner HTML
-        (expense) => {
-            expenseContainer.innerHTML += `
+    //for a given expense, add a new card containing that data to the expenseContainer's inner HTML
+    expensesData.forEach((expense) => {
+        expenseContainer.innerHTML += `
                         <div class="card" id="">
                             <div class="header">
                                 <div>
@@ -32,8 +30,7 @@ function renderExpenses(expensesData) {
                             </div>
                         </div>
         `;
-        },
-    );
+    });
 }
 
 //4 call the function to render the data on page load
@@ -44,7 +41,7 @@ expenseForm.addEventListener(
     "submit", //The name/type of the event (e.g "click", "submit", "change", etc.)
     function (event) {
         //The logic/function that should fire (with the event being passed to it by default)
-        event.preventDefault();
+        event.preventDefault(); //Event built-in: preventing default behaviour on a form basically means "don't refresh the page when the form is submitted"
         console.log("Form submitted!");
     },
 );
