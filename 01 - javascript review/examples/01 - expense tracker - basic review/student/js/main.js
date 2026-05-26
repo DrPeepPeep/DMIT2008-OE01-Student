@@ -37,6 +37,10 @@ function renderExpenses(expenseData) {
 // 4. call the function to actually do the render
 renderExpenses(expenses);
 
+expenseForm.addEventListener("change", function (event) {
+    console.log(event.target.value);
+});
+
 // 5. let's write all our code as inline first, then clean it up later
 expenseForm.addEventListener(
     "submit", // argument 1: the name/type of the event (e.g. submit, change, click -> these are HTML built-ins)
@@ -60,7 +64,12 @@ expenseForm.addEventListener(
             date,
             category,
         };
+        // a change in data -> us should re-render (with vanilla JS, we have to trigger that manually)
         expenses.push(newExpense);
         renderExpenses(expenses);
+
+        // after submitting, we want the form to reset
+        expenseForm.reset();
+        // You could also write this.reset(); since the code scope for this listener is attached to expenseForm as the parent object - "this" just refers to whatever the parent object is for the code block you're in
     },
 );
