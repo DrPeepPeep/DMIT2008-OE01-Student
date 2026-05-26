@@ -42,6 +42,23 @@ expenseForm.addEventListener(
     "submit", // argument 1: the name/type of the event (e.g. submit, change, click -> these are HTML built-ins)
     function (event) {
         // argument 2: the logic/function that should fire (with the event being passed to it by default)
+
         event.preventDefault(); // event built-in; preventing default behaviour on a form basically means "don't post data & reload page"
+
+        // Let's grab all our input elements/values
+        const title = document.getElementById("title").value;
+        const amount = document.getElementById("amount").value;
+        const date = document.getElementById("date").value;
+        const category = document.getElementById("category").value;
+
+        // Let's write out our logic in "naively", and beef it up later
+        const newExpense = {
+            // if object property name and variable name are the same you can just {value} instead of {property: value}
+            id: expenses.length + 1,
+            title,
+            amount,
+            date,
+            category,
+        };
     },
 );
