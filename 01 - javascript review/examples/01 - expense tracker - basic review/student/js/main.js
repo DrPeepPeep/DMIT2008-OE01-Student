@@ -95,7 +95,16 @@ searchBox.addEventListener(
 expenseContainer.addEventListener("click", function (event) {
     //event.target will be *exactly* what got clicked within the expense container not always the container itself
     if (event.target.classList.contains("delete-btn")) {
+        // 1. get the ID of the card / data element that got clicked
         // delete the element from the expenses array (somehow getting the right one) then re-rendering
+        const expenseId = parseInt(event.target.id);
+        // 2. Now i have to find where in the expenses array this object is.
+        // -> we can never safely assume that e.g IDs dont have gaps, etc.
+        // -> an ID isn't guaranteed to match the position of that object in the array.
+        const expenseIndex = expenses.findIndex(
+            //"get me the index of the expense
+            (expense) => expense.id === expenseId, // where the expense ID matches the expenseId we got I clicked"
+        );
     } else if (event.target.classList.contains("edit-btn")) {
         // populate the form inputs w/ data from the element/card
         // somehow figure out a way to save back to that element/card instead of creating a new one
