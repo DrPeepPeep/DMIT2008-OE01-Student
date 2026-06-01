@@ -3,7 +3,7 @@ import expenses from './expense-data.js';
 
 // 2. grab relevant DOM elements
 const expenseContainer = document.getElementById('expense-container');
-const searchTerm = document.getElementById('searchbox');
+const searchBox = document.getElementById('searchbox');
 const expenseForm = document.getElementById('expense-form-add');
 
 // 3. render out data into a grid of cards
@@ -43,6 +43,77 @@ renderExpenses(expenses);
 expenseForm.addEventListener(
   "submit",            // argument 1: the name/type of the event (e.g. submit, change, click -> these are HTML built-ins)
   function (event) {   // argument 2: the logic/function that should fire (with the event being passed to it by default)
-    console.log(event);
+
     event.preventDefault(); // event built-in; preventing default behaviour on a form basically means "don't post data & reload page"
+
+    // let's grab all our input elements/values
+    const title = document.getElementById('title').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+    const date = document.getElementById('date').value;
+    const category = document.getElementById('category').value;
+
+    // make a new expense if all the fields are present & amount is a number
+    if (title && date && category && !isNaN(amount)) { // "isNaN": "is Not a Number"
+      const newExpense = {
+        // if object property name & variable name are the same you can just {value} instead of {property: value}
+        id: expenses.length + 1,
+        title,
+        amount,
+        date,
+        category,
+      };
+
+      // a change in data -> ui should re-render (with vanilla JS, we have to trigger that manually)
+      expenses.push(newExpense);
+      renderExpenses(expenses);
+
+      // after submitting, we want the form to reset
+      expenseForm.reset();
+      // you could also write this.reset() since the code scope for this listener is attached to expenseForm
+      // as the parent object — "this" just refers to whatever the parent object for a block of code is
+    }
+
 });
+
+
+/* 6. let's handle search filtration! we need:
+      - the searchbox DOM element as an object (already done in step 2)
+      - attach an event listener on it for change/input events
+      - somehow filter the cards (i.e. the expenses array) based on the text in the searchbox
+*/
+searchBox.addEventListener(
+  "input",            // arg 1: event type/name
+  function (event) {  // arg 2: callback function that fires when event is emitted
+    console.log(event);
+    const searchTerm = event.target.value.toLowerCase();
+    const filteredExpenses = expenses.filter(
+      (expense) => expense.title.toLowerCase().includes(searchTerm)
+    );
+    renderExpenses(filteredExpenses);
+  }
+);
+
+// 7. let's handle editing/deleting
+// I only need one click listener for the whole card container; I can just narrow down later
+// specifically what got clicked.
+expenseContainer.addEventListener(
+  "click",
+  function(event) {
+    // event.target will be *exactly* what got clicked within the expense container, not just
+    // "always the container itself"
+    if (event.target.classList.contains("delete-btn")) {
+      // 1. get the ID of the card / data element that got clicked
+      const expenseId = parseInt(event.target.id)
+      // 2. now, I have to find where in the expenses array this object is.
+      //     -> we can never safely assume that e.g. IDs don't have gaps, etc.;
+      //        an ID isn't guaranteed to match the position of that object in the array
+      const expenseIndex = expenses.findIndex(  // get me the index of the expense
+        (expense) => expense.id === expenseId   // where the expense ID matches the ID on the button that got clicked
+      ) 
+
+    } else if (event.target.classList.contains("edit-btn")) {
+      // populate the form inputs w/ data from the element/card
+      // somehow figure out a way to save back to that element/card instead of creating a new one
+    }
+  }
+);
