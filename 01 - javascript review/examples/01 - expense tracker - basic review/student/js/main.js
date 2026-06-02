@@ -105,6 +105,12 @@ expenseContainer.addEventListener("click", function (event) {
             //"get me the index of the expense
             (expense) => expense.id === expenseId, // where the expense ID matches the expenseId we got I clicked"
         );
+        // 3. once we have the index, we can delete what's in that index in the array:
+        if (expenseIndex !== -1) {
+            // findIndex returns -1 if it can't find a matching index ^
+            expenses.splice(expenseIndex, 1); // "starting at {expenseIndex}, delete 1 element"
+            renderExpenses(expenses); // data changed; therefore we re-render
+        }
     } else if (event.target.classList.contains("edit-btn")) {
         // populate the form inputs w/ data from the element/card
         // somehow figure out a way to save back to that element/card instead of creating a new one
