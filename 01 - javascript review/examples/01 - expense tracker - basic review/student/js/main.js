@@ -5,6 +5,7 @@ import expenses from "./expense-data.js";
 const expenseContainer = document.getElementById("expense-container");
 const searchBox = document.getElementById("searchbox");
 const expenseForm = document.getElementById("expense-form-add");
+const submitBtn = document.getElementById("submitter");
 
 // 3. render out data into a grid of cards
 function renderExpenses(expenseData) {
@@ -52,24 +53,45 @@ expenseForm.addEventListener(
         const category = document.getElementById("category").value;
 
         // make a new expense if all the fields are present & amount is a number
-        if (title && date && category && !isNaN(amount)) {
-            // "isNaN": "is not a Number"
+        // 8. handle both editing & adding new expenses by changing form behaviour
+        if (submitBtn.innerText === "Add Expense") {
+            if (title && date && category && !isNaN(amount)) {
+                // "isNaN": "is not a Number"
 
-            const newExpense = {
-                // if object property name and variable name are the same you can just {value} instead of {property: value}
-                id: expenses.length + 1,
-                title,
-                amount,
-                date,
-                category,
-            };
-            // a change in data -> us should re-render (with vanilla JS, we have to trigger that manually)
-            expenses.push(newExpense);
-            renderExpenses(expenses);
+                const newExpense = {
+                    // if object property name and variable name are the same you can just {value} instead of {property: value}
+                    id: expenses.length + 1,
+                    title,
+                    amount,
+                    date,
+                    category,
+                };
+                // a change in data -> us should re-render (with vanilla JS, we have to trigger that manually)
+                expenses.push(newExpense);
+                renderExpenses(expenses);
 
-            // after submitting, we want the form to reset
-            expenseForm.reset();
-            // You could also write this.reset(); since the code scope for this listener is attached to expenseForm as the parent object - "this" just refers to whatever the parent object is for the code block you're in
+                // after submitting, we want the form to reset
+                expenseForm.reset();
+                // You could also write this.reset(); since the code scope for this listener is attached to expenseForm as the parent object - "this" just refers to whatever the parent object is for the code block you're in
+            }
+        } else {
+            const expenseId = parseInt(document.getElementById("expense-id").value);
+            const expenseToEdit = expenses.find((expense) => expense.id === expenseId);
+            // note: when changing/reading data, I'm always looking at the data source, not reading values
+            if (expenseToEdit) {
+                // I am directly editing the element in that array in-place
+                expenseToEdit.title = title;
+                expenseToEdit.amount = amount;
+                expenseToEdit.date = date;
+                expenseToEdit.category = category;
+
+                // We changed data -> ui should re-render
+                renderExpenses(expenses); // the expense being changed
+
+                // QOL / cleanup
+                submitBtn.innerText = "Add Expense";
+                expenseForm.reset();
+            }
         }
     },
 );
@@ -124,9 +146,6 @@ expenseContainer.addEventListener("click", function (event) {
             document.getElementById("date").value = expenseToEdit.date;
             document.getElementById("category").value = expenseToEdit.category;
             document.getElementById("expense-id").value = expenseToEdit.id;
-
-            // bonus QOL: change button text depending on what we're doing
-            document.getElementById("submitter").innerText = "Save";
         }
     }
 });
