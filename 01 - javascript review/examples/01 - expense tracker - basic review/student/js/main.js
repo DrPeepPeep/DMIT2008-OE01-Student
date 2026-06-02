@@ -114,5 +114,19 @@ expenseContainer.addEventListener("click", function (event) {
     } else if (event.target.classList.contains("edit-btn")) {
         // populate the form inputs w/ data from the element/card
         // somehow figure out a way to save back to that element/card instead of creating a new one
+        // 1+2. get ID of cxard and find its index
+        const expenseId = parseInt(event.target.id); // find the actual object (we need whats in it, instead of deleting)
+        const expenseToEdit = expenses.find((expense) => expense.id === expenseId); // we still want a matching object based on ID
+        // 3. populate the form input with data from the expense item
+        if (expenseToEdit) {
+            document.getElementById("title").value = expenseToEdit.title;
+            document.getElementById("amount").value = expenseToEdit.amount;
+            document.getElementById("date").value = expenseToEdit.date;
+            document.getElementById("category").value = expenseToEdit.category;
+            document.getElementById("expense-id").value = expenseToEdit.id;
+
+            // bonus QOL: change button text depending on what we're doing
+            document.getElementById("submitter").innerText = "Save";
+        }
     }
 });
