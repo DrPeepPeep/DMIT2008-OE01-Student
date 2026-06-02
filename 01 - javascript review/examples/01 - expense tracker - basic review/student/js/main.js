@@ -5,7 +5,7 @@ import expenses from "./expense-data.js";
 const expenseContainer = document.getElementById("expense-container");
 const searchBox = document.getElementById("searchbox");
 const expenseForm = document.getElementById("expense-form-add");
-const submitBtn = document.getElementById("submitter");
+const submitButton = document.getElementById("submitter");
 
 // 3. render out data into a grid of cards
 function renderExpenses(expenseData) {
@@ -17,20 +17,20 @@ function renderExpenses(expenseData) {
     expenseData.forEach((expense) => {
         expenseContainer.innerHTML += ` 
 
-    <div class="card" id="${expense.id}">
+      <div class="card" id="${expense.id}">
         <div class="header">
-        <div>
+          <div>
             <div class="title">${expense.title}</div>
             <div class="meta category">${expense.category}</div>
-        </div>
-        <div class="amount">${expense.amount}</div>
+          </div>
+          <div class="amount">${expense.amount}</div>
         </div>
         <div class="meta date">${expense.date}</div>
         <div class="actions">
-            <button class="edit-btn" id="${expense.id}">Edit</button>
-            <button class="delete-btn" id="${expense.id}">Delete</button>
+          <button class="edit-btn" id="${expense.id}">Edit</button>
+          <button class="delete-btn" id="${expense.id}">Delete</button>
         </div>
-    </div>
+      </div>
     `;
     });
 }
@@ -46,65 +46,70 @@ expenseForm.addEventListener(
 
         event.preventDefault(); // event built-in; preventing default behaviour on a form basically means "don't post data & reload page"
 
-        // Let's grab all our input elements/values
+        // let's grab all our input elements/values
         const title = document.getElementById("title").value;
         const amount = parseFloat(document.getElementById("amount").value);
         const date = document.getElementById("date").value;
         const category = document.getElementById("category").value;
 
         // make a new expense if all the fields are present & amount is a number
-        // 8. handle both editing & adding new expenses by changing form behaviour
-        if (submitBtn.innerText === "Add Expense") {
+        // 8. handle both editing existing & adding new expenses by changing form behaviour
+        if (submitButton.innerText === "Add Expense") {
+            // we could use a toggle variable; this is just to keep things quick
             if (title && date && category && !isNaN(amount)) {
-                // "isNaN": "is not a Number"
-
+                // "isNaN": "is Not a Number"
                 const newExpense = {
-                    // if object property name and variable name are the same you can just {value} instead of {property: value}
+                    // if object property name & variable name are the same you can just {value} instead of {property: value}
                     id: expenses.length + 1,
                     title,
                     amount,
                     date,
                     category,
                 };
-                // a change in data -> us should re-render (with vanilla JS, we have to trigger that manually)
+
+                // a change in data -> ui should re-render (with vanilla JS, we have to trigger that manually)
                 expenses.push(newExpense);
                 renderExpenses(expenses);
 
                 // after submitting, we want the form to reset
                 expenseForm.reset();
-                // You could also write this.reset(); since the code scope for this listener is attached to expenseForm as the parent object - "this" just refers to whatever the parent object is for the code block you're in
+                // you could also write this.reset() since the code scope for this listener is attached to expenseForm
+                // as the parent object — "this" just refers to whatever the parent object for a block of code is
             }
         } else {
             const expenseId = parseInt(document.getElementById("expense-id").value);
-            const expenseToEdit = expenses.find((expense) => expense.id === expenseId);
-            // note: when changing/reading data, I'm always looking at the data source, not reading values
+            const expenseToEdit = expenses.find(
+                // find the actual object (we need what's in it, as opposed to simply deleting)
+                (expense) => expense.id === expenseId, // we still want a matching object based on ID
+            );
+            // note: when changing/reading data, I'm always looking at the data source, not HTML values
             if (expenseToEdit) {
-                // I am directly editing the element in that array in-place
+                // I am directly editing the element in that array in-place (I don't need to re-add it to the array)
                 expenseToEdit.title = title;
                 expenseToEdit.amount = amount;
                 expenseToEdit.date = date;
                 expenseToEdit.category = category;
 
-                // We changed data -> ui should re-render
-                renderExpenses(expenses); // the expense being changed
+                // we changed data -> ui should re-render
+                renderExpenses(expenses);
 
                 // QOL / cleanup
-                submitBtn.innerText = "Add Expense";
+                submitButton.innerText = "Add Expense";
                 expenseForm.reset();
             }
         }
     },
 );
 
-/* 6. let's add search functionality We need:
-    - the searchbox DOM element as an object (already done in step 2)
-    - attach an event listener on it for change/input events 
-    - somehow filter the cards (i.e the expenses array) based on the text in the searchbox
+/* 6. let's handle search filtration! we need:
+      - the searchbox DOM element as an object (already done in step 2)
+      - attach an event listener on it for change/input events
+      - somehow filter the cards (i.e. the expenses array) based on the text in the searchbox
 */
 searchBox.addEventListener(
     "input", // arg 1: event type/name
     function (event) {
-        // arg 2: callback function that fires when the event is emitted
+        // arg 2: callback function that fires when event is emitted
         console.log(event);
         const searchTerm = event.target.value.toLowerCase();
         const filteredExpenses = expenses.filter((expense) => expense.title.toLowerCase().includes(searchTerm));
@@ -112,40 +117,47 @@ searchBox.addEventListener(
     },
 );
 
-// 7. Let's handle editing/deleting
-// I only need one click listener for the whole card container; I can just narrow down later specifically what got clicked
+// 7. let's handle editing/deleting
+// I only need one click listener for the whole card container; I can just narrow down later
+// specifically what got clicked.
 expenseContainer.addEventListener("click", function (event) {
-    //event.target will be *exactly* what got clicked within the expense container not always the container itself
+    // event.target will be *exactly* what got clicked within the expense container, not just
+    // "always the container itself"
     if (event.target.classList.contains("delete-btn")) {
         // 1. get the ID of the card / data element that got clicked
-        // delete the element from the expenses array (somehow getting the right one) then re-rendering
         const expenseId = parseInt(event.target.id);
-        // 2. Now i have to find where in the expenses array this object is.
-        // -> we can never safely assume that e.g IDs dont have gaps, etc.
-        // -> an ID isn't guaranteed to match the position of that object in the array.
+        // 2. now, I have to find where in the expenses array this object is.
+        //     -> we can never safely assume that e.g. IDs don't have gaps, etc.;
+        //        an ID isn't guaranteed to match the position of that object in the array
         const expenseIndex = expenses.findIndex(
-            //"get me the index of the expense
-            (expense) => expense.id === expenseId, // where the expense ID matches the expenseId we got I clicked"
+            // get me the index of the expense
+            (expense) => expense.id === expenseId, // where the expense ID matches the ID on the button that got clicked
         );
-        // 3. once we have the index, we can delete what's in that index in the array:
+        // 3. once we have the index, we can delete what's at that index in the array:
         if (expenseIndex !== -1) {
             // findIndex returns -1 if it can't find a matching index ^
-            expenses.splice(expenseIndex, 1); // "starting at {expenseIndex}, delete 1 element"
+            expenses.splice(expenseIndex, 1); // "starting at {expenseIndex}, delete 1 thing" (i.e. just that expense)
             renderExpenses(expenses); // data changed; therefore we re-render
         }
     } else if (event.target.classList.contains("edit-btn")) {
         // populate the form inputs w/ data from the element/card
         // somehow figure out a way to save back to that element/card instead of creating a new one
-        // 1+2. get ID of cxard and find its index
-        const expenseId = parseInt(event.target.id); // find the actual object (we need whats in it, instead of deleting)
-        const expenseToEdit = expenses.find((expense) => expense.id === expenseId); // we still want a matching object based on ID
-        // 3. populate the form input with data from the expense item
+        // 1+2. get ID of card & find its index
+        const expenseId = parseInt(event.target.id);
+        const expenseToEdit = expenses.find(
+            // find the actual object (we need what's in it, as opposed to simply deleting)
+            (expense) => expense.id === expenseId, // we still want a matching object based on ID
+        );
+        // 3. populate the form inputs with data from the expense item
         if (expenseToEdit) {
             document.getElementById("title").value = expenseToEdit.title;
             document.getElementById("amount").value = expenseToEdit.amount;
             document.getElementById("date").value = expenseToEdit.date;
             document.getElementById("category").value = expenseToEdit.category;
             document.getElementById("expense-id").value = expenseToEdit.id;
+
+            // bonus QOL: change button text depending on what we're doing
+            submitButton.innerText = "Save";
         }
     }
 });
