@@ -10,14 +10,15 @@ const submitButton = document.getElementById('submitter');
 // FUNCTIONS: HTML rendering --------------------------------------------------
 // 3. render out data into a grid of cards
 function renderExpenses(expenseData) {
-  // first, clear out existing HTML for the container (because we're about to re-render it)
-  expenseContainer.innerHTML = "";
+  // last thing: our current rendering actually re-renders the entire container's DOM
+  // *for every single expense* in the array! So "just adding 1 expense" to an array of
+  // 50 existing expenses would mean 51 re-renders total D:
 
-  // then, take our array of data, and render out a card for each one
-  // for a given expense, add a new card containing that data to the expenseContainer's inner HTML
-  expenseData.forEach(
-    (expense) => {
-      expenseContainer.innerHTML += `
+  // So, we just need to make sure we only replace expenseContainer.innerHTML *once*.
+  // If we use .map(), we can do it all in one go:
+  expenseContainer.innerHTML = expenseData.map(
+    // the map itself builds an *array* of individual HTML snippets per expense, which isn't valid HTML
+    (expense) => `
       <div class="card">
         <div class="header">
           <div>
@@ -33,8 +34,8 @@ function renderExpenses(expenseData) {
         </div>
       </div>
     `
-    }
-  );
+  ).join("") // so we just join every element together into one string :)
+  // Note how we no longer had to clear innerHTML first! We're no longer appending to it; we overwrite it completely
 }
 
 
