@@ -1,65 +1,65 @@
 class ExpenseForm extends HTMLElement {
-    /* What do we need in here?
+  /* What do we need in here?
     - render - a method to render the HTML
     - connectedCallback - what should happen when the element loads into the DOM (initialisation)
     - form-specific logic
     */
 
-    connectedCallback() {
-        this.render(); // render it first, so the selectors actually have HTML to read from
-        this.form = this.querySelector('form');
-        this.submitButton = this.querySelector('#submitter');
-        this.form.addEventListener('submit', this.handleSubmit)
+  connectedCallback() {
+    this.render(); // render it first, so the selectors actually have HTML to read from
+    this.form = this.querySelector("form");
+    this.submitButton = this.querySelector("#submitter");
+    this.form.addEventListener("submit", this.handleSubmit);
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const fields = this.readFormData();
+
+    if (!this.validateFormData(fields)) {
+      alert("Please fill in all fields correctly.");
+      return;
     }
 
-    handleSubmit = (event) => {
-      event.preventDefault();
-      const fields = this.readFormData();
+    // we don't have access to expenses anymore, so we'll need to figure something out
+    // for how to push the form inputs back to main.js, where one central instance of the expenses
+    // can be modified by this form.
+    // (TBD)
 
-      if (!this.validateFormData(fields)) {
-        alert("Please fill in all fields correctly.");
-        return;
-      }
+    this.reset();
+  };
 
-      // we don't have access to expenses anymore, so we'll need to figure something out
-      // for how to push the form inputs back to main.js, where one central instance of the expenses
-      // can be modified by this form.
-      // (TBD)
+  reset() {
+    this.form.reset();
+    this.submitButton.innerText = "Add Expense";
+  }
 
-      this.reset();      
-    }
+  readFormData() {
+    return {
+      id: parseInt(this.querySelector("#expense-id").value),
+      title: this.querySelector("#title").value,
+      category: this.querySelector("#category").value,
+      date: this.querySelector("#date").value,
+      amount: parseFloat(this.querySelector("#amount").value),
+    };
+  }
 
-    reset() {
-        this.form.reset();
-        this.submitButton.innerText = "Add Expense";
-    }
+  populateForm(expense) {
+    this.querySelector("#title").value = expense.title;
+    this.querySelector("#amount").value = expense.amount;
+    this.querySelector("#date").value = expense.date;
+    this.querySelector("#category").value = expense.category;
+    this.querySelector("#expense-id").value = expense.id;
 
-    readFormData() {
-      return {
-        id:       parseInt(this.querySelector('#expense-id').value),
-        title:    this.querySelector("#title").value,
-        category: this.querySelector("#category").value,
-        date:     this.querySelector("#date").value,
-        amount:   parseFloat(this.querySelector("#amount").value),
-      };
-    }
+    this.submitButton.innerText = "Save";
+  }
 
-    populateForm(expense) {
-      this.querySelector("#title").value      = expense.title;
-      this.querySelector("#amount").value     = expense.amount;
-      this.querySelector("#date").value       = expense.date;
-      this.querySelector("#category").value   = expense.category;
-      this.querySelector("#expense-id").value = expense.id;
+  validateFormData({ title, category, date, amount }) {
+    return title && category && date && !isNaN(amount);
+  }
 
-      this.submitButton.innerText = "Save";
-    }
-
-    validateFormData ({ title, category, date, amount }) {
-      return title && category && date && !isNaN(amount);
-    }
-
-    render() {
-        this.innerHTML = `
+  render() {
+    this.innerHTML = `
         <div class="form-container">
           <h2>Add Expense</h2>
           <form id="expense-form-add">
@@ -91,8 +91,8 @@ class ExpenseForm extends HTMLElement {
             <button type="submit" id="submitter">Add Expense</button>
           </form>
         </div>
-        `
-    }
+        `;
+  }
 }
 
-customElements.define('expense-form', ExpenseForm) // ('html-name', ClassName)
+customElements.define("expense-form", ExpenseForm); // ('html-name', ClassName)

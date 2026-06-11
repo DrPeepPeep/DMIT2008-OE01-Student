@@ -47,7 +47,7 @@ const expenses = [
   { id: 46, title: "Glue", category: "Hobbies", date: "2025-03-28", amount: 2.8 },
   { id: 47, title: "Pencils", category: "Education", date: "2025-03-27", amount: 3.3 },
   { id: 48, title: "Soda", category: "Food", date: "2025-03-26", amount: 1.5 },
-  { id: 49, title: "Sandwich", category: "Food", date: "2025-03-25", amount: 6.0 }
+  { id: 49, title: "Sandwich", category: "Food", date: "2025-03-25", amount: 6.0 },
 ];
 
 export default expenses;

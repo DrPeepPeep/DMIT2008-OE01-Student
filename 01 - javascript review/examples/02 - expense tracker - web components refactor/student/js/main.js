@@ -1,15 +1,15 @@
-import expenses from './expense-data.js';
+import expenses from "./expense-data.js";
 
 // custom components
-import './components/ExpenseSearch.js';
-import './components/ExpenseForm.js';
-import './components/ExpenseList.js';
+import "./components/ExpenseSearch.js";
+import "./components/ExpenseForm.js";
+import "./components/ExpenseList.js";
 // ExpenseCard is only used/imported by ExpenseList, not here
 
 // grab our DOM elements
-const form   = document.querySelector('expense-form');
-const search = document.querySelector('expense-search');
-const list   = document.querySelector('expense-list');
+const form = document.querySelector("expense-form");
+const search = document.querySelector("expense-search");
+const list = document.querySelector("expense-list");
 
 // function addExpense({title, category, date, amount}) {
 //   const maxId = expenses.reduce(
@@ -28,12 +28,12 @@ const list   = document.querySelector('expense-list');
 
 // function updateExpense(id, fields) {
 //   const expense = expenses.find((expense) => expense.id === id);
-//   if (expense) Object.assign(expense, fields); 
+//   if (expense) Object.assign(expense, fields);
 // }
 
 // function deleteExpense(id) {
 //   const index = expenses.findIndex((expense) => expense.id === id);
-//   if (index !== -1) expenses.splice(index, 1) 
+//   if (index !== -1) expenses.splice(index, 1)
 // }
 
 // function searchExpenses(query) {
@@ -80,9 +80,8 @@ const list   = document.querySelector('expense-list');
 //   }
 // }
 
-
 // expenseContainer.addEventListener("click", handleExpenseContainerClick);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   list.expenses = [...expenses];
 });

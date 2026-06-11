@@ -2,10 +2,10 @@
 // It expects one property (not attribute) to be set by main.js:
 //   list.expenses = [ ...arrayOfExpenseObjects ]
 
-import './ExpenseCard.js';
+import "./ExpenseCard.js";
 
 class ExpenseList extends HTMLElement {
-  #expenses = []; 
+  #expenses = [];
   // store the array of expenses as a private field
   // this way, only functions within ExpenseList can alter its contents
 
@@ -25,9 +25,7 @@ class ExpenseList extends HTMLElement {
 
   // we can calculate the total pretty neatly here
   #getTotal() {
-    return this.#expenses
-      .reduce((sum, expense) => sum + expense.amount, 0)
-      .toFixed(2);
+    return this.#expenses.reduce((sum, expense) => sum + expense.amount, 0).toFixed(2);
   }
 
   render() {
@@ -35,7 +33,9 @@ class ExpenseList extends HTMLElement {
 
     // build the entire grid of cards as an array of HTML strings and join it into one big string
     // this way, we only hit the DOM (and re-render it) once
-    const cards = this.#expenses.map((expense) => `
+    const cards = this.#expenses
+      .map(
+        (expense) => `
       <expense-card
         expense-id="${expense.id}"
         title="${expense.title}"
@@ -43,7 +43,9 @@ class ExpenseList extends HTMLElement {
         date="${expense.date}"
         category="${expense.category}"
       ></expense-card>
-    `).join('');
+    `,
+      )
+      .join("");
 
     this.innerHTML = `
       <div class="expense-list">
@@ -56,4 +58,4 @@ class ExpenseList extends HTMLElement {
   }
 }
 
-customElements.define('expense-list', ExpenseList);
+customElements.define("expense-list", ExpenseList);
