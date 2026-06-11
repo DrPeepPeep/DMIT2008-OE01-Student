@@ -21,17 +21,17 @@ function renderExpenses(expenseData) {
       // the map itself builds an *array* of individual HTML snippets per expense, which isn't valid HTML
       (expense) => `
     <div class="card">
-            <div class="header">
-        <div>
-                <div class="title">${expense.title}</div>
-                <div class="meta category">${expense.category}</div>
-            </div>
-            <div class="amount">$${expense.amount}</div>
+        <div class="header">
+          <div>
+              <div class="title">${expense.title}</div>
+              <div class="meta category">${expense.category}</div>
+          </div>
+          <div class="amount">$${expense.amount}</div>
         </div>
         <div class="meta date">${expense.date}</div>
         <div class="actions">
-            <button class="edit-btn" data-id="${expense.id}">Edit</button>
-            <button class="delete-btn" data-id="${expense.id}">Delete</button>
+          <button class="edit-btn" data-id="${expense.id}">Edit</button>
+          <button class="delete-btn" data-id="${expense.id}">Delete</button>
         </div>
     </div>
     `,
@@ -45,11 +45,11 @@ function renderExpenses(expenseData) {
 function addExpense({ title, category, date, amount }) {
   /* Using (expenses.length + 1) for the ID is *super* risky and *will* cause constant bugs,
     because it assumes that the length of the array must determine the highest ID. It doesn't:
-								[1, 2, 3, 4, 5]
-        --> delete the third expense
-        [1, 2, 4, 5]
-        --> create a new expense, currently using id = expenses.length + 1
-        [1, 2, 4, 5, 5]
+			[1, 2, 3, 4, 5]
+      --> delete the third expense
+      [1, 2, 4, 5]
+      --> create a new expense, currently using id = expenses.length + 1
+      [1, 2, 4, 5, 5]
 
         They're completely unrelated!
 
@@ -57,9 +57,9 @@ function addExpense({ title, category, date, amount }) {
 
         I said you'd rarely use reduce (at least compared to map & filter), but it's perfect here!
         -> refresher:
-            map walks through an array, and applies a function to each element, returning a new array.
-            filter walks through an array, looks at whether some condition is true (for each element), and returns only those elements.
-            reduce walks through an array, carrying a running value from one element to the next, and returns that running value (not an array) at the end.
+          map walks through an array, and applies a function to each element, returning a new array.
+          filter walks through an array, looks at whether some condition is true (for each element), and returns only those elements.
+          reduce walks through an array, carrying a running value from one element to the next, and returns that running value (not an array) at the end.
   */
   const maxId = expenses.reduce(
     // so this is: "walk me through the expenses array,"
