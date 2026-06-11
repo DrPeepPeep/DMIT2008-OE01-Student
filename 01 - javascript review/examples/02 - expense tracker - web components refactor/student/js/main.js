@@ -1,13 +1,14 @@
-import expenses from './expense-data.js';
+import expenses from "./expense-data.js";
 
-const expenseContainer = document.getElementById('expense-container');
-const searchBox = document.getElementById('searchbox');
-const expenseForm = document.getElementById('expense-form-add');
-const submitButton = document.getElementById('submitter');
+const expenseContainer = document.getElementById("expense-container");
+const searchBox = document.getElementById("searchbox");
+const expenseForm = document.getElementById("expense-form-add");
+const submitButton = document.getElementById("submitter");
 
 function renderExpenses(expenseData) {
-  expenseContainer.innerHTML = expenseData.map(
-    (expense) => `
+  expenseContainer.innerHTML = expenseData
+    .map(
+      (expense) => `
       <div class="card">
         <div class="header">
           <div>
@@ -22,41 +23,36 @@ function renderExpenses(expenseData) {
           <button class="delete-btn" data-id="${expense.id}">Delete</button>
         </div>
       </div>
-    `
-  ).join("")
+    `,
+    )
+    .join("");
 }
 
-
-function addExpense({title, category, date, amount}) {
-  const maxId = expenses.reduce(
-    (highest, expense) => Math.max(highest, expense.id),
-    0
-  );
+function addExpense({ title, category, date, amount }) {
+  const maxId = expenses.reduce((highest, expense) => Math.max(highest, expense.id), 0);
 
   expenses.push({
-    id: maxId + 1,  // tada!
+    id: maxId + 1, // tada!
     title,
     category,
     date,
-    amount
+    amount,
   });
 }
 
 function updateExpense(id, fields) {
   const expense = expenses.find((expense) => expense.id === id);
-  if (expense) Object.assign(expense, fields); 
+  if (expense) Object.assign(expense, fields);
 }
 
 function deleteExpense(id) {
   const index = expenses.findIndex((expense) => expense.id === id);
-  if (index !== -1) expenses.splice(index, 1) 
+  if (index !== -1) expenses.splice(index, 1);
 }
 
 function searchExpenses(query) {
   const q = query.toLowerCase();
-  return expenses.filter(
-    (expense) => expense.title.toLowerCase().includes(q)
-  );
+  return expenses.filter((expense) => expense.title.toLowerCase().includes(q));
 }
 
 // FUNCTIONS: form ------------------------------------------------------------
@@ -79,7 +75,7 @@ function populateForm(expense) {
   submitButton.innerText = "Save";
 }
 
-function validateFormData ({ title, category, date, amount }) {
+function validateFormData({ title, category, date, amount }) {
   return title && category && date && !isNaN(amount);
 }
 
@@ -125,12 +121,10 @@ function handleExpenseContainerClick(event) {
   }
 }
 
-
 expenseForm.addEventListener("submit", handleFormSubmit);
 searchBox.addEventListener("input", handleSearch);
 expenseContainer.addEventListener("click", handleExpenseContainerClick);
 
-document.addEventListener("DOMContentLoaded", (event) => { 
+document.addEventListener("DOMContentLoaded", (event) => {
   renderExpenses(expenses);
 });
-
