@@ -82,6 +82,17 @@ const list = document.querySelector("expense-list");
 
 // expenseContainer.addEventListener("click", handleExpenseContainerClick);
 
+// heres where i'll listen for the custom events,. since its where my single source of truth (the array) lives:
+document.addEventListener("expense-delete", (event) => {
+  const index = expenses.findIndex((expense) => expense.id === event.detail.id);
+  if (index !== -1) expenses.splice(index, 1);
+  // ^ this is just logic relocated from the deleteExpense helper function.
+  // the only thing I need to do is change the data in the expense container.
+  list.expenses = [...expenses];
+  // ^ instead of manually triggering a re-render (data change -> rerender is now automiic)
+  // I need to make the ExpenseList.expenses aware of the new data.
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   list.expenses = [...expenses];
 });

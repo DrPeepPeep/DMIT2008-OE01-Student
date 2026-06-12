@@ -26,7 +26,13 @@ class ExpenseCard extends HTMLElement {
     }
 
     if (event.target.classList.contains("delete-btn")) {
-      // somehow send a delete to the array
+      // console.log("ExpenseCard.#handleClick: got a delete click")
+      this.dispatchEvent(
+        new CustomEvent("expense-delete", {
+          bubbles: true,
+          detail: { id },
+        }),
+      );
     }
   };
 
