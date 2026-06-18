@@ -15,8 +15,8 @@
 - remove the footer.
 - Observe the differences on the page as you make these changes.
 3. In your "components-example" example project create a folder named "components" in the root of your project.
-4. in the "components" folder create a file named "Hello.js"
-    - create a function named "Hello" with "export default" before the function keyword.
+4. in the "components" folder create a file named `Hello.js`
+    - create a function named `Hello` with `export default` before the function keyword.
     - in that function just return some html in it.
 5. import your newly created component in the "index.js" file in your "pages" folder with the following
 ```js
@@ -31,7 +31,7 @@ under the title tag in the "main"
 
 - Observe the differences on the page as you make the changes.
 
-7. Create a new component called "NewConcept" in a folder called "NewConcept.js" like you did with the "Hello" component. The only difference is that you're going to pass a parameter named "props"
+7. Create a new component called `NewConcept` in a folder called `NewConcept.js` like you did with the "Hello" component. The only difference is that you're going to pass a parameter named "props"
 - in your component use the prop named "concept" in the component itself. It should look something like below.
 ```jsx
   return <p>
@@ -58,7 +58,7 @@ under the title tag in the "main"
 9. Create a componenet called "ComponentWrapper" in the same way that you've done with the past two (define the props parameter).
 - In the function we're going to use a special prop named "children" like so.
 ```jsx
-        return <div style={{color: props.textColor}}>
+        return <div style={{ color: props.textColor}}>
           {props.children}
         </div>
 ```
