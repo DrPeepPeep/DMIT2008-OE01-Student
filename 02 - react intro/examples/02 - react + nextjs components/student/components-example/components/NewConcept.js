@@ -8,10 +8,8 @@
 // you'd use this in JSX as:
 // <NewConcept concept="How to make a component" author="Tyler" />
 
-export default function NewConcept({ concept, author }) {
-  return (
-    <p>
-      In this class we'll learn: {concept} by {author}
-    </p>
-  );
+export default function NewConcept({ concept }) {
+  // I think destructuring is the better way because then it's
+  // immediately apparent what you're ingesting/using.
+  return <p>In this class we'll learn: {concept}</p>;
 }

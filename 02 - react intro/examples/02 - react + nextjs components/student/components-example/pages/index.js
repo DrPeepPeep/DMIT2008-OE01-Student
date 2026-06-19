@@ -4,8 +4,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 
 // my components
-import Hello from "../components/Hello.js";
-import NewConcept from "../components/NewConcept";
+import Hello from "@/components/Hello.js";
+import NewConcept from "@/components/NewConcept";
+// @ is the project root, so this is the same as ../../components/NewConcept
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,9 @@ export default function Home() {
       <div className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}>
         <main className={styles.main}>
           <Hello />
-          <NewConcept concept="How to make a component" author="Tyler" />
+          <NewConcept concept="How to make a component" />
+          <NewConcept concept="Destructuring objects" />
+          <NewConcept concept="next.js and what it bundles & does" />
         </main>
       </div>
     </>
