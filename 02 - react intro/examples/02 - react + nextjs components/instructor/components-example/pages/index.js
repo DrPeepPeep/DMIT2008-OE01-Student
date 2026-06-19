@@ -1,3 +1,5 @@
+// this is our main file; it functionally replaces index.html
+
 import Head from "next/head";
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -26,7 +28,6 @@ export default function Home() {
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
         <main className={styles.main}>
-
         </main>
       </div>
     </>
