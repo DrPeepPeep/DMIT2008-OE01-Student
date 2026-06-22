@@ -5,6 +5,12 @@ import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 
+// my components
+import Hello from '@/components/Hello';
+import NewConcept from '@/components/NewConcept';
+// @ is the project root (see: jsonfig.json), so we don't have to write long annoying import paths
+
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,6 +20,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
 
 export default function Home() {
   return (
@@ -28,6 +35,10 @@ export default function Home() {
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
         <main className={styles.main}>
+          <Hello />
+          <NewConcept concept="creating and using components" />
+          <NewConcept concept="destructuring objects" />
+          <NewConcept concept="next.js and what it bundles & does" />     
         </main>
       </div>
     </>
