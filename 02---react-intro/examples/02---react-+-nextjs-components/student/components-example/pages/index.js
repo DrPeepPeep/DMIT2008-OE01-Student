@@ -6,6 +6,7 @@ import styles from "@/styles/Home.module.css";
 // my components
 import Hello from "@/components/Hello.js";
 import NewConcept from "@/components/NewConcept";
+import Container from "@/components/Container";
 // @ is the project root, so this is the same as ../../components/NewConcept
 
 const geistSans = Geist({
@@ -29,10 +30,12 @@ export default function Home() {
       </Head>
       <div className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}>
         <main className={styles.main}>
-          <Hello />
-          <NewConcept concept="How to make a component" />
-          <NewConcept concept="Destructuring objects" />
-          <NewConcept concept="next.js and what it bundles & does" />
+          <Container>
+            <Hello />
+            <NewConcept concept="How to make a component" />
+            <NewConcept concept="Destructuring objects" />
+            <NewConcept concept="next.js and what it bundles & does" />
+          </Container>
         </main>
       </div>
     </>
