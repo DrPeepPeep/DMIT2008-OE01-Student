@@ -1,5 +1,8 @@
 import Head from "next/head";
-import styles from "@/styles/Home.module.css";
+
+// MUI components
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 
 export default function Home() {
   return (
@@ -10,11 +13,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div
-        className={`${styles.page}`}
-      >
-        <main className={styles.main}>
-
+      <div>
+        <main>
+          <Container maxWidth="md" style={{ background: "#cccccc" }}>
+            <Box sx={{ my: 4 }}>some content we'll add later</Box>
+          </Container>
         </main>
       </div>
     </>
