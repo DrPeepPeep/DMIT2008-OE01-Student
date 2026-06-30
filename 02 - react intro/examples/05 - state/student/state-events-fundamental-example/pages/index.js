@@ -3,6 +3,9 @@ import Head from "next/head";
 // MUI Layout components
 import Container from "@mui/material/Container";
 
+// Own Components
+import TodoList from "@/components/TodoList";
+
 export default function Home() {
   return (
     <>
@@ -13,7 +16,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Container maxWidth="sm">Hello</Container>
+        <Container maxWidth="sm">
+          <TodoList />
+        </Container>
       </main>
     </>
   );
