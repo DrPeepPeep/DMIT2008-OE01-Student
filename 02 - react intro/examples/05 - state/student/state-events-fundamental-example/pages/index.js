@@ -1,6 +1,8 @@
 import Head from "next/head";
 
 // MUI Layout components
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
 export default function Home() {
   return (
@@ -11,7 +13,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>Hello</main>
+      <main>
+        <Container>
+          <Box></Box>
+        </Container>
+      </main>
     </>
   );
 }
