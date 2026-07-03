@@ -5,8 +5,13 @@ import { useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItem';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
 
 export default function TodoList() {
 
@@ -34,7 +39,6 @@ export default function TodoList() {
       // in a new array".
       setAllTodos(newTodos)
     }
-    console.log(allTodos)
   }
 
   return (
@@ -63,6 +67,22 @@ export default function TodoList() {
           </Button>
         </Grid>
 
+        <Grid size={12}>
+
+          <List sx={{ width: '75%' }}>
+            {allTodos.map(
+              /* Don't forget index when serialising lists in React! */
+              (todo, index) => {
+                return <ListItem key={index}>
+                  <ListItemText>
+                    <Typography>- {todo}</Typography>
+                  </ListItemText>
+                </ListItem>
+              }
+            )}
+          </List>
+
+        </Grid>
       </Grid>
   )
 
