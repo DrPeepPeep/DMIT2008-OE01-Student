@@ -80,45 +80,59 @@ export default function Home() {
           <Typography variant="h2" component="h2" style={{textAlign: "center"}}>
             Movies
           </Typography>
-          <form
-            style={{width: '100%'}}
-            onSubmit={handleSubmit}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  id="search-field"
-                  label="search..."
-                  variant="standard"
-                  value={searchTitle}
-                  onChange={(e) => {setSearchTitle(e.target.value)}}
-                  sx={{width: '100%'}}
-                  
-                />
+            <form
+              style={{width: '100%'}}
+              onSubmit={handleSubmit}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    id="search-field"
+                    label="search..."
+                    variant="standard"
+                    value={searchTitle}
+                    onChange={(e) => {setSearchTitle(e.target.value)}}
+                    sx={{width: '100%'}}
+                    
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="year-field"
+                    label="year"
+                    variant="standard"
+                    value={searchYear}
+                    onChange={(e) => {setSearchYear(e.target.value)}}
+                    sx={{width: '100%'}}
+                   
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                  >Filter</Button>
+                </Grid>
+                <Grid item xs={10}>
+                  {/* Add the error message here*/}
+                </Grid>
               </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="year-field"
-                  label="year"
-                  variant="standard"
-                  value={searchYear}
-                  onChange={(e) => {setSearchYear(e.target.value)}}
-                  sx={{width: '100%'}}
-                 
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                >Filter</Button>
-              </Grid>
-              <Grid item xs={10}>
-                {/* Add the error message here*/}
-              </Grid>
-            </Grid>
-          </form>
+            </form>
           <List sx={{width: `100%`}}>
+
+            {/* Note how this differs from the readme:
+                We only make conditional the part that changes.
+                Much cleaner & more readable code; someone else (that includes future you)
+                doesn't have to meticulously examine every line to make sure nothing else changed.
+            */}
+            <ListItem>
+              <ListItemText>
+                <Typography variant="p" component="div">
+                  { !movies.length ? "No matches found." : `${movies.length} movie results:` }
+                </Typography>
+              </ListItemText>
+            </ListItem>
+
           { movies.map((movieData, index)=> {
               return <ListItem key={index}>
                 <ListItemText>
