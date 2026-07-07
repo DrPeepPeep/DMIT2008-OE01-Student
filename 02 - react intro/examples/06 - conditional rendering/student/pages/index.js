@@ -28,11 +28,36 @@ export default function Home() {
   // always remains intact.
   const [movies, setMovies] = useState(MOVIE_LIST);
 
+  // set up a stateful error message
+  const [errorMsg, setErrorMsg] = useState("");
+
   const handleSubmit = () => {
     event.preventDefault();
+    validateSearch();
     filterMovies();
     console.log(searchTitle);
     console.log(searchYear);
+  };
+
+  const validateSearch = () => {
+    // considerations for whether there are input errors
+
+    if (!searchYear.trim().length) {
+      // or year.trim().length === 0
+      // this means no input, so there cannot be any errors
+      // therefore, reset error state
+      setErrorMsg("");
+      return;
+    }
+
+    if (!isValidYear(searchYear)) {
+      setErrorMsg(`${searchYear} is not a valid year.`);
+    }
+  };
+
+  const isValidYear = (year) => {
+    // a) is a valid number, b) check for length
+    return !isNaN(year) && year.trim().length === 4;
   };
 
   const filterMovies = () => {
@@ -104,15 +129,20 @@ export default function Home() {
                 </Button>
               </Grid>
               <Grid item xs={10}>
-                {/* Add the error message here*/}
+                {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
               </Grid>
             </Grid>
           </form>
           <List sx={{ width: `100%` }}>
+            {/* Note how this differs from the readme:
+                We only make conditional the part that changes.
+                Much cleaner & more readable code; someone else (that includes future you)
+                doesn't have to meticulously examine every line to make sure nothing else changed.
+            */}
             <ListItem>
               <ListItemText>
                 <Typography variant="p" component="div">
-                  {!movies.length ? "No matches found." : `${movies.length} movie results.`}
+                  {!movies.length ? "No matches found." : `${movies.length} movie results:`}
                 </Typography>
               </ListItemText>
             </ListItem>
