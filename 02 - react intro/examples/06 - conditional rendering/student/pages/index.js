@@ -109,6 +109,14 @@ export default function Home() {
             </Grid>
           </form>
           <List sx={{ width: `100%` }}>
+            <ListItem>
+              <ListItemText>
+                <Typography variant="p" component="div">
+                  {!movies.length ? "No matches found." : `${movies.length} movie results.`}
+                </Typography>
+              </ListItemText>
+            </ListItem>
+
             {movies.map((movieData, index) => {
               return (
                 <ListItem key={index}>
