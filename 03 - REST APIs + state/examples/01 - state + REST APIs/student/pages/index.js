@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { getRandomQuote } from "../utils/quotesApi.js";
+
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -16,15 +18,19 @@ import Typography from "@mui/material/Typography";
 export default function Home() {
   // let's pretend we have some data that is scoped externally from the web.
   // just like incoming REST API would be.
-  const newData = { quote: "You can't just make up quotes", author: "Oscar Wilde" };
+  // const newData = { quote: "You can't just make up quotes", author: "Oscar Wilde" };
 
   const [quoteData, setQuoteData] = useState({
     quote: "Quote here.",
     author: "Author here",
   });
 
-  const getRandomQuote = () => {
-    setQuoteData(newData);
+  const getQuote = () => {
+    const quoteData = getRandomQuote();
+    setQuoteData({
+      quote: quoteData.quote,
+      author: quoteData.author,
+    });
   };
 
   return (
