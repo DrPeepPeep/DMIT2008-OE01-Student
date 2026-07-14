@@ -1,40 +1,47 @@
-import Head from 'next/head'
-import Image from 'next/image'
+import { state } from "react";
 
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import Head from "next/head";
+import Image from "next/image";
 
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
-import Container from '@mui/material/Container';
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
 
-import InputLabel from '@mui/material/InputLabel';
-import Grid from '@mui/material/Grid';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import Container from "@mui/material/Container";
 
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
+import InputLabel from "@mui/material/InputLabel";
+import Grid from "@mui/material/Grid";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 
-import TextField from '@mui/material/TextField';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-
-
+import TextField from "@mui/material/TextField";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+/* GAME PLAN
+1. wire input fields to state (idealy one obj for all from inputs)
+2. wire the form submit action (take stateful data, run some sort of handful function to add new review)
+3. rewire our data source to REST API insteasd of local variable data
+4. bonus: some other fun logic we can do + UI Touch-ups
+*/
 
 export default function Home() {
-  const MOCK_ADAPTATION_RATING = [{
-    'title': 'Fight Club',
-    'comment': 'Great movie and book',
-    'rating': 10
-  }]
+  const MOCK_ADAPTATION_RATING = [
+    {
+      title: "Fight Club",
+      comment: "Great movie and book",
+      rating: 10,
+    },
+  ];
   return (
     <div>
       <Head>
@@ -54,31 +61,15 @@ export default function Home() {
           <form>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12}>
-                <TextField
-                  id="title"
-                  name="title"
-                  label="Adaptation Title"
-                  fullWidth
-                  variant="standard"
-                />
+                <TextField id="title" name="title" label="Adaptation Title" fullWidth variant="standard" />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <TextField
-                  id="review-comments"
-                  name="review-comments"
-                  label="Comments"
-                  fullWidth
-                  variant="standard"
-                />
+                <TextField id="review-comments" name="review-comments" label="Comments" fullWidth variant="standard" />
               </Grid>
               <Grid item xs={12} sm={12}>
                 <FormControl>
                   <FormLabel id="adaptation-rating">Rating</FormLabel>
-                  <RadioGroup
-                    row
-                    aria-labelledby="adaptation-rating"
-                    name="rating-buttons-group"
-                  >
+                  <RadioGroup row aria-labelledby="adaptation-rating" name="rating-buttons-group">
                     <FormControlLabel value="1" control={<Radio />} label="1" />
                     <FormControlLabel value="2" control={<Radio />} label="2" />
                     <FormControlLabel value="3" control={<Radio />} label="3" />
@@ -90,13 +81,10 @@ export default function Home() {
                     <FormControlLabel value="9" control={<Radio />} label="9" />
                     <FormControlLabel value="10" control={<Radio />} label="10" />
                   </RadioGroup>
-               </FormControl>
+                </FormControl>
               </Grid>
               <Grid item xs={12} sm={12}>
-                <Button
-                  variant="contained"
-                  type="submit"
-                >
+                <Button variant="contained" type="submit">
                   Add New Review
                 </Button>
               </Grid>
@@ -108,38 +96,33 @@ export default function Home() {
               pb: 2,
             }}
           >
-            <Button
-              variant="contained"
-            >
-              Load All Current Reviews
-            </Button>
+            <Button variant="contained">Load All Current Reviews</Button>
           </Box>
-          {MOCK_ADAPTATION_RATING.map((adaptation, index)=> {
-            return <Card key={index}>
-              <CardHeader
-                avatar={
-                  <Avatar sx={{ bgcolor: 'blue' }} aria-label="recipe">
-                    {adaptation.rating}
-                  </Avatar>
-                }
-                
-                title={
+          {MOCK_ADAPTATION_RATING.map((adaptation, index) => {
+            return (
+              <Card key={index}>
+                <CardHeader
+                  avatar={
+                    <Avatar sx={{ bgcolor: "blue" }} aria-label="recipe">
+                      {adaptation.rating}
+                    </Avatar>
+                  }
+                  title={
+                    <Typography variant="body2" color="text.secondary">
+                      {adaptation.title}
+                    </Typography>
+                  }
+                />
+                <CardContent>
                   <Typography variant="body2" color="text.secondary">
-                    {adaptation.title}
+                    {adaptation.comment}
                   </Typography>
-                }
-                
-              />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {adaptation.comment}
-                </Typography>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            );
           })}
-
         </Container>
       </main>
     </div>
-  )
+  );
 }
