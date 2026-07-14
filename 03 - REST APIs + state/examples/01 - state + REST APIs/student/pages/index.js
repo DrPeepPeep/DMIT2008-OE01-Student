@@ -56,17 +56,17 @@ export default function Home() {
               pb: 6,
             }}
           >
+            <Box display="flex" justifyContent="center">
+              <Button variant="contained" onClick={getQuote}>
+                Get New Quote
+              </Button>
+            </Box>
             <Typography variant="h5" align="center" color="text.primary" paragraph>
               {quoteData.quote}
             </Typography>
             <Typography component="h1" variant="h4" align="center" color="text.secondary" gutterBottom>
               {quoteData.author}
             </Typography>
-            <Box display="flex" justifyContent="center">
-              <Button variant="contained" onClick={getQuote}>
-                Get New Quote
-              </Button>
-            </Box>
           </Box>
         </Container>
       </main>
