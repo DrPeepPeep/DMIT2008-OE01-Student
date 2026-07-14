@@ -25,8 +25,8 @@ export default function Home() {
     author: "Author here",
   });
 
-  const getQuote = () => {
-    const quoteData = getRandomQuote();
+  const getQuote = async () => {
+    const quoteData = await getRandomQuote();
     setQuoteData({
       quote: quoteData.quote,
       author: quoteData.author,
@@ -63,7 +63,7 @@ export default function Home() {
               {quoteData.author}
             </Typography>
             <Box display="flex" justifyContent="center">
-              <Button variant="contained" onClick={getRandomQuote}>
+              <Button variant="contained" onClick={getQuote}>
                 Get New Quote
               </Button>
             </Box>
