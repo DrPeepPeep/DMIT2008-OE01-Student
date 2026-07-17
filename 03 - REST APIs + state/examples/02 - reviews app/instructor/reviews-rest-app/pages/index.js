@@ -148,7 +148,7 @@ export default function Home() {
             </Button>
           </Box>
           {reviews.map((adaptation, index)=> {
-            return <Card key={index}>
+            return <Card key={index} sx={{ my: 2 }}>
               <CardHeader
                 avatar={
                   <Avatar sx={{ bgcolor: 'blue' }} aria-label="recipe">
