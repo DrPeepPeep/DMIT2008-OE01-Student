@@ -1,7 +1,6 @@
-import { state } from "react";
+import { useState } from "react";
 
 import Head from "next/head";
-import Image from "next/image";
 
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -27,21 +26,65 @@ import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-/* GAME PLAN
-1. wire input fields to state (idealy one obj for all from inputs)
-2. wire the form submit action (take stateful data, run some sort of handful function to add new review)
-3. rewire our data source to REST API insteasd of local variable data
-4. bonus: some other fun logic we can do + UI Touch-ups
+
+/* GAME PLAN:
+
+    1. wire input fields to state (ideally, one obj for all form inputs rather than one stateful var per field)
+    2. wire the form submit action (take stateful data, run some sort of handler function to add new review)
+    3. rewire our data source to REST API instead of local var data
+    4. bonus: some other fun logic we can do + UI touchups
 */
 
 export default function Home() {
-  const MOCK_ADAPTATION_RATING = [
-    {
-      title: "Fight Club",
-      comment: "Great movie and book",
-      rating: 10,
-    },
-  ];
+  const [reviews, setReviews] = useState([]);
+  const [formData, setFormData] = useState({
+    title: "",
+    comment: "",
+    rating: 1,
+  });
+
+  const addReview = (e) => {
+    e.preventDefault();
+
+    // let's start by POSTing the new review to the API
+    // and seeing what response we get back
+    fetch(`http://localhost:5000/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // option 1 for automating reload-on-submit:
+        // Wait for new review to successfully POST to API,
+        // then reload *all* reviews.
+        getReviews();
+
+        /* 
+        option 2 would be, instead: "I'm going to add the new form data to my local reviews array &
+        re-render the component, and *Seperately* POST to the API - BAD! now you have no guarantee
+        that your presentation data is the same as the acutal data."
+        */
+      });
+
+    setFormData({ title: "", comment: "", rating: 1 });
+  };
+
+  const getReviews = () => {
+    fetch(`http://localhost:5000/reviews`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setReviews(data);
+      });
+  };
+
   return (
     <div>
       <Head>
@@ -58,18 +101,32 @@ export default function Home() {
       </AppBar>
       <main>
         <Container maxWidth="md">
-          <form>
+          <form onSubmit={addReview}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12}>
-                <TextField id="title" name="title" label="Adaptation Title" fullWidth variant="standard" />
+                <TextField id="title" name="title" label="Adaptation Title" fullWidth variant="standard" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <TextField id="review-comments" name="review-comments" label="Comments" fullWidth variant="standard" />
+                <TextField
+                  id="review-comments"
+                  name="review-comments"
+                  label="Comments"
+                  fullWidth
+                  variant="standard"
+                  value={formData.comment}
+                  onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+                />
               </Grid>
               <Grid item xs={12} sm={12}>
                 <FormControl>
                   <FormLabel id="adaptation-rating">Rating</FormLabel>
-                  <RadioGroup row aria-labelledby="adaptation-rating" name="rating-buttons-group">
+                  <RadioGroup
+                    row
+                    aria-labelledby="adaptation-rating"
+                    name="rating-buttons-group"
+                    value={formData.rating}
+                    onChange={(e) => setFormData({ ...formData, rating: parseInt(e.target.value) })}
+                  >
                     <FormControlLabel value="1" control={<Radio />} label="1" />
                     <FormControlLabel value="2" control={<Radio />} label="2" />
                     <FormControlLabel value="3" control={<Radio />} label="3" />
@@ -79,7 +136,7 @@ export default function Home() {
                     <FormControlLabel value="7" control={<Radio />} label="7" />
                     <FormControlLabel value="8" control={<Radio />} label="8" />
                     <FormControlLabel value="9" control={<Radio />} label="9" />
-                    <FormControlLabel value="10" control={<Radio />} label="10" />
+                    <FormControlLabel value={"10"} control={<Radio />} label="10" />
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -96,11 +153,13 @@ export default function Home() {
               pb: 2,
             }}
           >
-            <Button variant="contained">Load All Current Reviews</Button>
+            <Button variant="contained" onClick={getReviews}>
+              Load All Current Reviews
+            </Button>
           </Box>
-          {MOCK_ADAPTATION_RATING.map((adaptation, index) => {
+          {reviews.map((adaptation, index) => {
             return (
-              <Card key={index}>
+              <Card key={index} sx={{ my: 2 }}>
                 <CardHeader
                   avatar={
                     <Avatar sx={{ bgcolor: "blue" }} aria-label="recipe">
