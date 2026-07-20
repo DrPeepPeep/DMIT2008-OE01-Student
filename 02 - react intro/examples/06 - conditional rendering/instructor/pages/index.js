@@ -32,8 +32,24 @@ export default function Home() {
   const handleSubmit = () => {
     event.preventDefault();
     filterMovies();
-    console.log(searchTitle);
-    console.log(searchYear);
+    console.log(searchForm.title);
+    console.log(searchForm.year);
+  }
+
+  const validateSearch = () => {
+    // considerations for whether there are input errors
+
+    if (!searchForm.year.trim().length) { // or year.trim().length === 0
+      // this means no input, so there cannot be any errors
+      // therefore, reset error state
+      setErrorMsg("")
+      return
+    }
+
+    if (!isValidYear(searchForm.year)) {
+      setErrorMsg(`${searchForm.year} is not a valid year.`)
+    }
+
   }
 
   const filterMovies = () => {
@@ -41,21 +57,21 @@ export default function Home() {
     let filteredMovies = [...MOVIE_LIST] // I can't just = MOVIE_LIST because then it'll alter the original
 
     // 2. deal with title (trim, lowercase, match on .includes() )
-    if (searchTitle.trim()) {
+    if (searchForm.title.trim()) {
       filteredMovies = filteredMovies.filter(
         (movie) => { 
           // filter's callback function should return something truthy or falsey
           return movie.name.toLowerCase().includes(
-            searchTitle.trim().toLowerCase()
+            searchForm.title.trim().toLowerCase()
           )
         }
       )
     }
 
     // 3. deal with the year (trim, convert to integter, match on equality)
-    if (searchYear.trim()) {
+    if (searchForm.year.trim()) {
       filteredMovies = filteredMovies.filter((movie) => {
-        return movie.year === parseInt(searchYear.trim())
+        return movie.year === parseInt(searchForm.year.trim())
       })
     }
 
@@ -80,21 +96,54 @@ export default function Home() {
           <Typography variant="h2" component="h2" style={{textAlign: "center"}}>
             Movies
           </Typography>
-          <form
-            style={{width: '100%'}}
-            onSubmit={handleSubmit}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  id="search-field"
-                  label="search..."
-                  variant="standard"
-                  value={searchTitle}
-                  onChange={(e) => {setSearchTitle(e.target.value)}}
-                  sx={{width: '100%'}}
-                  
-                />
+            <form
+              style={{width: '100%'}}
+              onSubmit={handleSubmit}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    id="search-field"
+                    label="search..."
+                    variant="standard"
+                    value={searchForm.title}
+                    onChange={
+                      /* We need to reconstruct the whole object when writing to state (just like arrays),
+                         and the syntax is similar! Instead of [...arrayItems, newItem], we just
+                         {...object, specificProperty: newValue }
+                      */
+                      (e) => {setSearchForm(
+                        {...searchForm, title: e.target.value}
+                      )}
+                    }
+                    sx={{width: '100%'}}
+                    
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="year-field"
+                    label="year"
+                    variant="standard"
+                    value={searchForm.year}
+                    onChange={(e) => {setSearchForm(
+                      {...searchForm, year: e.target.value}
+                      )}}
+                    sx={{width: '100%'}}
+                   
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                  >Filter</Button>
+                </Grid>
+                <Grid item xs={10}>
+                  { errorMsg &&
+                    <Alert severity="error">{errorMsg}</Alert>
+                  }
+                </Grid>
               </Grid>
               <Grid item xs={4}>
                 <TextField
