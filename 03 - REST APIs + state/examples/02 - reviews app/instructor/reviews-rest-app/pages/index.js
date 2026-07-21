@@ -40,7 +40,7 @@ import Typography from '@mui/material/Typography';
 
 export default function Home() {
 
-  const [reviews, setReviews] = useState([])
+  const [reviews, setReviews] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     comment: "",
@@ -65,6 +65,12 @@ export default function Home() {
       // Wait for new review to successfully POST to API,
       // then reload *all* reviews.
       getReviews();
+
+      /* option 2 would be, instead: "I'm going to add the new form data to
+         to my local reviews array & re-render the component, and *separately*
+         POST to the API — bad! now you have no guarantee that your presentation data
+         is the same as the actual data.
+      */ 
     });
 
     setFormData({ title: "", comment: "", rating: 1});
@@ -75,7 +81,7 @@ export default function Home() {
     .then((response)=> {
       return response.json()
     }).then((data)=> {
-      console.log(data);
+      console.log("refetched reviews.");
       setReviews(data);
     });
   }
