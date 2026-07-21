@@ -62,6 +62,18 @@ export default function Home() {
     []      // param 2: the dependency array (empty array = fire when component mounts)
   )
 
+  // 2. fire effect on state change
+  useEffect(
+    () => { console.log("quote was changed") },
+    [quoteData] // when dependency array contains things (for now, let's pretend that's just state)               
+  )             // effect will fire automatically when that state changes!
+
+  // 3. evil condition you shouldn't do:
+  //    You *could* not pass a 2nd term to useEffect (no dependency array at all)
+  //    If you only have the callback function and no dependency array (even empty),
+  //    the effect will fire when the component re-renders for *any reason*.
+
+
   return (
     <div>
       <Head>
