@@ -37,7 +37,7 @@ export default function Home() {
     author: "Author here",
   });
 
-  const handleClick = () => {
+  const getRandomQuote = () => {
     fetch(RANDOM_QUOTE_URL)
       .then((response) => {
         return response.json();
@@ -53,7 +53,7 @@ export default function Home() {
   // 1. fire effect on component mount (very often on page load)
   useEffect(() => {
     // param 1: the call function that should run when the component mounts
-    console.log("component has mounted, effect fired on mount");
+    getRandomQuote();
   }, []); // param 2: the dependency array (empty array = fire when component mounts)
 
   // 2. fire effect on state change
@@ -100,7 +100,7 @@ export default function Home() {
               {quoteData.author}
             </Typography>
             <Box display="flex" justifyContent="center">
-              <Button variant="contained" onClick={handleClick}>
+              <Button variant="contained" onClick={getRandomQuote}>
                 Get New Quote
               </Button>
             </Box>
