@@ -50,7 +50,9 @@ export const deleteReview = (id) => {
   return fetch(`${BASE_URL}/reviews/${id}/`, {
     method: "DELETE",
   })
-    .then(response.json())
+    .then((response) => {
+      return response.json();
+    })
     .then((data) => {
       return Promise.resolve(data);
     });

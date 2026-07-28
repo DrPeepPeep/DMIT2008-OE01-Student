@@ -34,8 +34,9 @@ export default function ReviewCard({ id, rating, title, comment, deleteCallback 
   };
 
   const deleteReviewHandler = (reviewId) => {
-    console.log(`Deleting ${reviewId}`);
-    deleteCallback(reviewId).then((data) => {
+    console.log(`deleting ${reviewId}`);
+    // API delete is still async/non-obstructing; they're just automated together now
+    deleteReviewItem(reviewId).then((data) => {
       deleteCallback(id);
     });
   };
@@ -49,7 +50,11 @@ export default function ReviewCard({ id, rating, title, comment, deleteCallback 
           </Avatar>
         }
         action={
-          <IconButton onClick={() => deleteReviewHandler(id)}>
+          <IconButton
+            onClick={() => {
+              deleteReviewHandler(id);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         }
