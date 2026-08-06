@@ -8,11 +8,9 @@ export default function NavBar(props) {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Link href="/">
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Space Agency App
-          </Typography>
-        </Link>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Link href="/"> Space Agency App</Link>
+        </Typography>
         <Link href="/about/">
           <Typography variant="h6" component="div">
             About
