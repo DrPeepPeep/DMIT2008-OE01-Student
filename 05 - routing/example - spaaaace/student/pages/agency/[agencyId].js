@@ -11,7 +11,7 @@ import SimpleDetailsCard from "@components/SimpleDetailsCard";
 
 export default function Agency() {
   const router = useRouter();
-  const { id } = router.query; // Note: this uses destructuring!
+  const { agencyId } = router.query; // destructure out any/all dynamic route params
 
   return (
     <>
@@ -23,7 +23,7 @@ export default function Agency() {
           </Grid>
           <Grid item xs="10">
             <Typography variant="h3" gutterBottom>
-              Agency Page for {id}
+              Agency Page for {agencyId}
             </Typography>
           </Grid>
         </Grid>
