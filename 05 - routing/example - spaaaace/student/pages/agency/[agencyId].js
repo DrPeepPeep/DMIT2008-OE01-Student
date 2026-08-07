@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -10,6 +11,7 @@ import Grid from "@mui/material/Grid";
 
 import Typography from "@mui/material/Typography";
 
+import LoadingCircle from "@components/LoadingCircle";
 import NavBar from "@components/NavBar";
 import SimpleDetailsCard from "@components/SimpleDetailsCard";
 
