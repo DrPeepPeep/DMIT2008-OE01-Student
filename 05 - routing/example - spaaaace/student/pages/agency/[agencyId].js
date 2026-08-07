@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import Head from "next/head";
 
@@ -10,8 +11,20 @@ import NavBar from "@components/NavBar";
 import SimpleDetailsCard from "@components/SimpleDetailsCard";
 
 export default function Agency() {
+  const [agencyDetails, setAgencyDetails] = useState();
+
   const router = useRouter();
   const { agencyId } = router.query; // destructure out any/all dynamic route params
+
+  useEffect(
+    () => {
+      getAgency(agencyId).then((data) => {
+        console.log(data);
+        setAgencyDetails(data);
+      });
+    },
+    [agencyId], // effect will fire on mount/load + whenever agencyId changes
+  );
 
   return (
     <>
