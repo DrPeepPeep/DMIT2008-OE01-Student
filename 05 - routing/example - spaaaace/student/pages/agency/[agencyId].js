@@ -1,13 +1,15 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
+
 import { useEffect, useState } from "react";
 
-import Head from "next/head";
+import { getAgency } from "@utils/api/agencies";
 
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
-import LoadingCircle from "@components/LoadingCircle";
+import Typography from "@mui/material/Typography";
+
 import NavBar from "@components/NavBar";
 import SimpleDetailsCard from "@components/SimpleDetailsCard";
 
@@ -20,7 +22,6 @@ export default function Agency() {
   useEffect(
     () => {
       getAgency(agencyId).then((data) => {
-        console.log(data);
         setAgencyDetails(data);
       });
     },
@@ -30,22 +31,26 @@ export default function Agency() {
   return (
     <>
       <NavBar />
-      {!agencyDetails ? (
-        <LoadingCircle />
-      ) : (
-        <Container sx={{ paddingTop: 2 }}>
-          <Grid container>
-            <Grid item xs="2">
-              <img alt={agencyDetails.name} src={agencyDetails.logo_url} style={{ width: "120px" }} />
-            </Grid>
-            <Grid item xs="10">
-              <Typography variant="h3" gutterBottom>
-                Agency Page for {agencyId}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Container>
-      )}
+      <Container sx={{ paddingTop: 2 }}>
+        <Grid container>
+          {!agencyDetails ? (
+            <LoadingCircle />
+          ) : (
+            <Container sx={{ paddingTop: 2 }}>
+              <Grid container>
+                <Grid item xs="2">
+                  <img alt={agencyDetails.name} src={agencyDetails.logo_url} style={{ width: "120px" }} />
+                </Grid>
+                <Grid item xs="10">
+                  <Typography variant="h3" gutterBottom>
+                    Agency Page for {agencyId}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Container>
+          )}
+        </Grid>
+      </Container>
     </>
   );
 }
